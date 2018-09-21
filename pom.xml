@@ -14,11 +14,41 @@
         <java-version>1.8</java-version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <tool.wsimport>${java.home}/bin/wsimport.exe</tool.wsimport>
+            </properties>
+        </profile>
+        <profile>
+            <id>not-windows</id>
+            <activation>
+                <os>
+                    <family>!windows</family>
+                </os>
+            </activation>
+            <properties>
+                <tool.wsimport>${java.home}/bin/wsimport</tool.wsimport>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
             <version>2.3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 
@@ -45,6 +75,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!-- Hack borrowed from https://github.com/mojohaus/jaxws-maven-plugin/issues/54 -->
+                    <executable>${tool.wsimport}</executable>
                     <packageName>calculator</packageName>
                     <wsdlUrls>
                         <wsdlUrl>http://www.dneonline.com/calculator.asmx?WSDL</wsdlUrl>
