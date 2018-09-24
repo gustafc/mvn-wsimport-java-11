@@ -14,31 +14,6 @@
         <java-version>1.8</java-version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <tool.wsimport>${java.home}/bin/wsimport.exe</tool.wsimport>
-            </properties>
-        </profile>
-        <profile>
-            <id>not-windows</id>
-            <activation>
-                <os>
-                    <family>!windows</family>
-                </os>
-            </activation>
-            <properties>
-                <tool.wsimport>${java.home}/bin/wsimport</tool.wsimport>
-            </properties>
-        </profile>
-    </profiles>
-
     <dependencies>
         <dependency>
             <groupId>com.sun.xml.ws</groupId>
@@ -49,6 +24,11 @@
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ws</groupId>
+            <artifactId>spring-ws-core</artifactId>
+            <version>3.0.3.RELEASE</version>
         </dependency>
     </dependencies>
 
@@ -64,23 +44,24 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.5</version>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>wsimport</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- Hack borrowed from https://github.com/mojohaus/jaxws-maven-plugin/issues/54 -->
-                    <executable>${tool.wsimport}</executable>
-                    <packageName>calculator</packageName>
-                    <wsdlUrls>
-                        <wsdlUrl>http://www.dneonline.com/calculator.asmx?WSDL</wsdlUrl>
-                    </wsdlUrls>
+                    <schemaLanguage>WSDL</schemaLanguage>
+                    <generatePackage>calculator</generatePackage>
+                    <schemas>
+                        <schema>
+                            <url>http://www.dneonline.com/calculator.asmx?WSDL</url>
+                        </schema>
+                    </schemas>
                 </configuration>
             </plugin>
             <plugin>

@@ -2,8 +2,9 @@ package github.gustafc.mvnwsimport11;
 
 import java.lang.invoke.MethodHandles;
 
-import calculator.Calculator;
 
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 public class Add {
 
@@ -13,9 +14,8 @@ public class Add {
         }
         int intA = Integer.parseInt(args[0]);
         int intB = Integer.parseInt(args[1]);
-        Calculator calculator = new Calculator();
         System.out.printf("%d + %d = ", intA, intB);
-        int added = calculator.getCalculatorSoap().add(intA, intB);
+        int added = new CalculatorClient().add(intA, intB);
         System.out.println(added);
     }
 
